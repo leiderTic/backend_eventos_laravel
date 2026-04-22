@@ -14,13 +14,13 @@ class Temporada extends Model
 
     protected $fillable = [
         'descripcion',
-        'fecha_ini',
-        'fecha_fin',
+        'mes_inicio',
+        'mes_fin',
     ];
 
     protected $casts = [
-        'fecha_ini' => 'date',
-        'fecha_fin' => 'date',
+        'mes_inicio' => 'integer',
+        'mes_fin' => 'integer',
     ];
 
     public function tarifas()

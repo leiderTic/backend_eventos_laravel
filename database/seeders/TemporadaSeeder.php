@@ -12,21 +12,19 @@ class TemporadaSeeder extends Seeder
      */
     public function run(): void
     {
-        $currentYear = date('Y');
-
         Temporada::updateOrCreate(
             ['descripcion' => 'Temporada baja'],
             [
-                'fecha_ini' => "$currentYear-01-01",
-                'fecha_fin' => "$currentYear-06-30",
+                'mes_inicio' => 1,
+                'mes_fin' => 6,
             ]
         );
 
         Temporada::updateOrCreate(
             ['descripcion' => 'Temporada alta'],
             [
-                'fecha_ini' => "$currentYear-07-01",
-                'fecha_fin' => "$currentYear-12-31",
+                'mes_inicio' => 7,
+                'mes_fin' => 12,
             ]
         );
     }

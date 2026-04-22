@@ -11,8 +11,8 @@ return new class extends Migration
         Schema::create('temporadas', function (Blueprint $table) {
             $table->id();
             $table->string('descripcion');
-            $table->date('fecha_ini');
-            $table->date('fecha_fin');
+            $table->unsignedTinyInteger('mes_inicio');
+            $table->unsignedTinyInteger('mes_fin');
             $table->softDeletes();
             $table->timestamps();
         });
