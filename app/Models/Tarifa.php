@@ -15,11 +15,17 @@ class Tarifa extends Model
     protected $fillable = [
         'descripcion',
         'precio_dia',
+        'temporada_id',
     ];
 
     protected $casts = [
         'precio_dia' => 'decimal:2',
     ];
+
+    public function temporada()
+    {
+        return $this->belongsTo(Temporada::class);
+    }
 
     public function espacios()
     {

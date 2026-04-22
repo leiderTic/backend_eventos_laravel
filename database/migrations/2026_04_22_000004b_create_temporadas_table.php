@@ -8,11 +8,11 @@ return new class extends Migration
 {
     public function up(): void
     {
-        Schema::create('tarifas', function (Blueprint $table) {
+        Schema::create('temporadas', function (Blueprint $table) {
             $table->id();
             $table->string('descripcion');
-            $table->decimal('precio_dia', 10, 2);
-            $table->foreignId('temporada_id')->constrained('temporadas');
+            $table->date('fecha_ini');
+            $table->date('fecha_fin');
             $table->softDeletes();
             $table->timestamps();
         });
@@ -20,6 +20,6 @@ return new class extends Migration
 
     public function down(): void
     {
-        Schema::dropIfExists('tarifas');
+        Schema::dropIfExists('temporadas');
     }
 };
