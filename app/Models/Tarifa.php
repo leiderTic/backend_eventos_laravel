@@ -16,6 +16,7 @@ class Tarifa extends Model
         'descripcion',
         'precio_dia',
         'temporada_id',
+        'espacio_id',
     ];
 
     protected $casts = [
@@ -27,8 +28,8 @@ class Tarifa extends Model
         return $this->belongsTo(Temporada::class);
     }
 
-    public function espacios()
+    public function espacio()
     {
-        return $this->hasMany(Espacio::class);
+        return $this->belongsTo(Espacio::class);
     }
 }

@@ -17,7 +17,6 @@ return new class extends Migration
             $table->integer('aforo')->nullable();
             $table->foreignId('tipo_espacio_id')->constrained('tipo_espacios');
             $table->foreignId('bloque_id')->constrained('bloques');
-            $table->foreignId('tarifa_id')->constrained('tarifas');
             $table->softDeletes();
             $table->timestamps();
         });

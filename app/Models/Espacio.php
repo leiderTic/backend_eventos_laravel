@@ -20,7 +20,6 @@ class Espacio extends Model
         'aforo',
         'tipo_espacio_id',
         'bloque_id',
-        'tarifa_id',
     ];
 
     protected $casts = [
@@ -39,9 +38,9 @@ class Espacio extends Model
         return $this->belongsTo(Bloque::class);
     }
 
-    public function tarifa()
+    public function tarifas()
     {
-        return $this->belongsTo(Tarifa::class);
+        return $this->hasMany(Tarifa::class);
     }
 
     public function cotizaciones()

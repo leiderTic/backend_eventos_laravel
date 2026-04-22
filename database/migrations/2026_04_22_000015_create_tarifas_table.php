@@ -13,6 +13,7 @@ return new class extends Migration
             $table->string('descripcion');
             $table->decimal('precio_dia', 10, 2);
             $table->foreignId('temporada_id')->constrained('temporadas');
+            $table->foreignId('espacio_id')->constrained('espacios')->onDelete('cascade');
             $table->softDeletes();
             $table->timestamps();
         });
