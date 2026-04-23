@@ -37,9 +37,9 @@ class Cotizacion extends Model
         return $this->belongsTo(Evento::class);
     }
 
-    public function personas()
+    public function clientes()
     {
-        return $this->belongsToMany(Persona::class, 'cotizacion_persona')
+        return $this->belongsToMany(Cliente::class, 'cotizacion_cliente')
                     ->withPivot('estado')
                     ->withTimestamps();
     }

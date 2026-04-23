@@ -6,24 +6,24 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Persona extends Model
+class Cliente extends Model
 {
     use HasFactory, SoftDeletes;
 
-    protected $table = 'personas';
+    protected $table = 'clientes';
 
     protected $fillable = [
         'ci_nit',
         'nombre',
         'correo',
         'telefono',
-        'tipo_persona_id',
-        'persona_id',
+        'tipo_cliente_id',
+        'cliente_id',
     ];
 
-    public function tipoPersona()
+    public function tipoCliente()
     {
-        return $this->belongsTo(TipoPersona::class);
+        return $this->belongsTo(TipoCliente::class);
     }
 
     /**
@@ -31,7 +31,7 @@ class Persona extends Model
      */
     public function contactos()
     {
-        return $this->hasMany(Persona::class, 'persona_id');
+        return $this->hasMany(Cliente::class, 'cliente_id');
     }
 
     /**
@@ -39,12 +39,12 @@ class Persona extends Model
      */
     public function institucion()
     {
-        return $this->belongsTo(Persona::class, 'persona_id');
+        return $this->belongsTo(Cliente::class, 'cliente_id');
     }
 
     public function cotizaciones()
     {
-        return $this->belongsToMany(Cotizacion::class, 'cotizacion_persona')
+        return $this->belongsToMany(Cotizacion::class, 'cotizacion_cliente')
                     ->withTimestamps();
     }
 }

@@ -6,18 +6,18 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class TipoPersona extends Model
+class TipoCliente extends Model
 {
     use HasFactory, SoftDeletes;
 
-    protected $table = 'tipo_personas';
+    protected $table = 'tipo_clientes';
 
     protected $fillable = [
         'descripcion',
     ];
 
-    public function personas()
+    public function clientes()
     {
-        return $this->hasMany(Persona::class);
+        return $this->hasMany(Cliente::class);
     }
 }

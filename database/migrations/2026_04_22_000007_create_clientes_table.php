@@ -8,14 +8,14 @@ return new class extends Migration
 {
     public function up(): void
     {
-        Schema::create('personas', function (Blueprint $table) {
+        Schema::create('clientes', function (Blueprint $table) {
             $table->id();
             $table->string('ci_nit')->nullable();
             $table->string('nombre');
-            $table->string('correo')->unique();
+            $table->string('correo')->nullable()->unique();
             $table->string('telefono')->nullable();
-            $table->foreignId('tipo_persona_id')->constrained('tipo_personas');
-            $table->foreignId('persona_id')->nullable()->constrained('personas')->onDelete('set null');
+            $table->foreignId('tipo_cliente_id')->constrained('tipo_clientes');
+            $table->foreignId('cliente_id')->nullable()->constrained('clientes')->onDelete('set null');
             $table->softDeletes();
             $table->timestamps();
         });
@@ -23,6 +23,6 @@ return new class extends Migration
 
     public function down(): void
     {
-        Schema::dropIfExists('personas');
+        Schema::dropIfExists('clientes');
     }
 };
