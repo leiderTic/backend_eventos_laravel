@@ -4,6 +4,6 @@ Accept: application/json
 Content-Type: application/json
 
 {
-    "email": "patricia.castillo@it.com",
+    "username": "patricia.castillo",
     "password": "PC2026!"
 }

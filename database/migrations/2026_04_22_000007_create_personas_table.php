@@ -15,6 +15,7 @@ return new class extends Migration
             $table->string('correo')->unique();
             $table->string('telefono')->nullable();
             $table->foreignId('tipo_persona_id')->constrained('tipo_personas');
+            $table->foreignId('persona_id')->nullable()->constrained('personas')->onDelete('set null');
             $table->softDeletes();
             $table->timestamps();
         });
