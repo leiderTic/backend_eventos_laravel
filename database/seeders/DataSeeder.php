@@ -7,6 +7,7 @@ use App\Models\Espacio;
 use App\Models\Tarifa;
 use App\Models\Temporada;
 use App\Models\TipoEspacio;
+use App\Models\TipoTarifa;
 use Illuminate\Database\Seeder;
 
 class DataSeeder extends Seeder
@@ -32,9 +33,15 @@ class DataSeeder extends Seeder
         $tempBaja = Temporada::where('descripcion', 'Temporada baja')->first()->id;
         $tempAlta = Temporada::where('descripcion', 'Temporada alta')->first()->id;
 
-        // 4. Datos de Espacios y Tarifas
-        // Formato array precios: [Social_B baja, Social_B alta, Social_A baja, Social_A alta, Feria baja, Feria alta, Concierto baja, Concierto alta]
-        // Se usará el nombre "Social 2", "Social 1", "Feria", "Concierto"
+        // 4. Tipos de Tarifa
+        $tipoTarifasData = ['Social', 'Corporativo', 'Feria', 'Concierto'];
+        $tipoTarifas = [];
+        foreach ($tipoTarifasData as $nombre) {
+            $tipoTarifas[$nombre] = TipoTarifa::firstOrCreate(['nombre' => $nombre])->id;
+        }
+
+        // 5. Datos de Espacios y Tarifas
+        // Formato array precios: [Social baja, Social alta, Corporativo baja, Corporativo alta, Feria baja, Feria alta, Concierto baja, Concierto alta]
         $espaciosData = [
             [
                 'id' => 'SPO', 'nombre' => 'Salón Potosí', 'bloque' => 'ROJO', 'tipo' => 'Salón', 
@@ -116,19 +123,20 @@ class DataSeeder extends Seeder
             );
 
             // Crear las 4 tarifas (8 precios)
-            $tarifasNames = ['Social 1', 'Social 2', 'Feria', 'Concierto'];
-            for ($i = 0; $i < 4; $i++) {
+            foreach ($tipoTarifasData as $index => $nombreTipo) {
+                $tipoId = $tipoTarifas[$nombreTipo];
+                
                 // Baja
                 Tarifa::create([
-                    'descripcion' => $tarifasNames[$i],
-                    'precio_dia' => $data['precios'][$i * 2],
+                    'tipo_tarifa_id' => $tipoId,
+                    'precio_dia' => $data['precios'][$index * 2],
                     'temporada_id' => $tempBaja,
                     'espacio_id' => $espacio->id,
                 ]);
                 // Alta
                 Tarifa::create([
-                    'descripcion' => $tarifasNames[$i],
-                    'precio_dia' => $data['precios'][$i * 2 + 1],
+                    'tipo_tarifa_id' => $tipoId,
+                    'precio_dia' => $data['precios'][$index * 2 + 1],
                     'temporada_id' => $tempAlta,
                     'espacio_id' => $espacio->id,
                 ]);

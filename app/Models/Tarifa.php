@@ -13,8 +13,8 @@ class Tarifa extends Model
     protected $table = 'tarifas';
 
     protected $fillable = [
-        'descripcion',
         'precio_dia',
+        'tipo_tarifa_id',
         'temporada_id',
         'espacio_id',
     ];
@@ -22,6 +22,11 @@ class Tarifa extends Model
     protected $casts = [
         'precio_dia' => 'decimal:2',
     ];
+
+    public function tipoTarifa()
+    {
+        return $this->belongsTo(TipoTarifa::class);
+    }
 
     public function temporada()
     {
