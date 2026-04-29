@@ -1,6 +1,6 @@
 ### Obtener todas las tarifas
 GET http://localhost:8081/api/tarifas
-Authorization: Bearer {{token}}
+Authorization: Bearer 3|0swGaL7rJ1BpACOd3ZZmJDLvVJSW1OAwbFjgu63x9ceca88c
 
 ### Crear una tarifa
 POST http://localhost:8081/api/tarifas
@@ -12,6 +12,10 @@ Content-Type: application/json
     "tipo_tarifa_id": 1,
     "espacio_id": 1
 }
+
+### Obtener tarifas por espacio específico
+GET http://localhost:8081/api/tarifas/espacio/1
+Authorization: Bearer 3|0swGaL7rJ1BpACOd3ZZmJDLvVJSW1OAwbFjgu63x9ceca88c
 
 ### Obtener una tarifa específica
 GET http://localhost:8081/api/tarifas/1

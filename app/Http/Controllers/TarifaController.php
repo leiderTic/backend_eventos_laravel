@@ -55,7 +55,16 @@ class TarifaController extends Controller
         return response()->json($tarifa->load(['tipoTarifa', 'espacio']));
     }
 
+    public function getByEspacio(string $espacioId)
+    {
+        $tarifas = Tarifa::with(['tipoTarifa', 'espacio'])
+                         ->where('espacio_id', $espacioId)
+                         ->get();
+        return response()->json($tarifas);
+    }
+
     public function destroy(string $id)
+
     {
         $tarifa = Tarifa::findOrFail($id);
         $tarifa->delete();
