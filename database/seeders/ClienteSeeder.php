@@ -16,13 +16,24 @@ class ClienteSeeder extends Seeder
         $tipoEmpresa = TipoCliente::firstOrCreate(['descripcion' => 'Institución']);
         $tipoContacto = TipoCliente::firstOrCreate(['descripcion' => 'Persona de contacto']);
 
-        // 2. Crear Instituciones y sus Contactos con datos de Bolivia
-        $instituciones = Cliente::factory()->count(8)->create([
-            'nombre' => fn() => $faker->company(),
-            'tipo_cliente_id' => $tipoEmpresa->id
-        ]);
+        // 2. Crear Instituciones Reales de Bolivia y sus Contactos
+        $nombresInstituciones = [
+            'YPFB Corporación',
+            'Cervecería Boliviana Nacional (CBN)',
+            'Banco Mercantil Santa Cruz',
+            'Entel S.A.',
+            'Soboce S.A.',
+            'Tigo Bolivia',
+            'Farmacorp',
+            'Minera San Cristóbal'
+        ];
 
-        foreach ($instituciones as $inst) {
+        foreach ($nombresInstituciones as $nombre) {
+            $inst = Cliente::factory()->create([
+                'nombre' => $nombre,
+                'tipo_cliente_id' => $tipoEmpresa->id
+            ]);
+
             Cliente::factory()->count(rand(1, 3))->create([
                 'tipo_cliente_id' => $tipoContacto->id,
                 'cliente_id' => $inst->id // Auto-referencia

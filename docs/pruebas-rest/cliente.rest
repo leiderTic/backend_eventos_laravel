@@ -1,0 +1,21 @@
+###Autenticación de usuario(Login)
+GET http://localhost:8081/api/v1/auth/cliente/contactos
+Accept: application/json
+Content-Type: application/json
+
+###
+GET http://localhost:8081/api/v1/auth/cliente/instituciones
+Accept: application/json
+Content-Type: application/json
+
+###
+GET http://localhost:8081/api/v1/auth/cliente/instituciones/2/contactos
+Accept: application/json
+Content-Type: application/json
+
+
+###
+GET http://localhost:8081/api/cliente
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer 2|A5pAfqJxpiuP1t1QiNqUVwYbsQOlg6QpnWo2u6AU6dc12e5c

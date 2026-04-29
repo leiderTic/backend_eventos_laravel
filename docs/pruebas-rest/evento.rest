@@ -1,0 +1,29 @@
+### Obtener todos los eventos
+GET http://localhost:8000/api/v1/eventos
+Authorization: Bearer {{token}}
+
+### Crear un evento
+POST http://localhost:8000/api/v1/eventos
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+    "descripcion": "Boda de Oro"
+}
+
+### Obtener un evento específico
+GET http://localhost:8000/api/v1/eventos/1
+Authorization: Bearer {{token}}
+
+### Actualizar un evento
+PUT http://localhost:8000/api/v1/eventos/1
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+    "descripcion": "Fiesta de Fin de Año"
+}
+
+### Eliminar un evento
+DELETE http://localhost:8000/api/v1/eventos/1
+Authorization: Bearer {{token}}

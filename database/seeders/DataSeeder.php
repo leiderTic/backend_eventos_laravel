@@ -15,10 +15,18 @@ class DataSeeder extends Seeder
     public function run(): void
     {
         // 1. Bloques
-        $bloquesData = ['ROJO', 'AMARILLO', 'CENTRAL', 'VERDE'];
+        $bloquesData = [
+            'ROJO' => '#ef4444', 
+            'AMARILLO' => '#eab308', 
+            'CENTRAL' => '#3b82f6', 
+            'VERDE' => '#22c55e'
+        ];
         $bloques = [];
-        foreach ($bloquesData as $nombre) {
-            $bloques[$nombre] = Bloque::firstOrCreate(['descripcion' => $nombre])->id;
+        foreach ($bloquesData as $nombre => $color) {
+            $bloques[$nombre] = Bloque::updateOrCreate(
+                ['descripcion' => $nombre],
+                ['color' => $color]
+            )->id;
         }
 
         // 2. Tipos de Espacio
