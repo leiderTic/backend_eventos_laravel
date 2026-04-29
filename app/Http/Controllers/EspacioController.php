@@ -9,7 +9,7 @@ class EspacioController extends Controller
 {
     public function index()
     {
-        $espacios = Espacio::with(['tipoEspacio', 'bloque', 'tarifas.temporada', 'tarifas.tipoTarifa'])->get();
+        $espacios = Espacio::with(['tipoEspacio', 'bloque', 'tarifas.tipoTarifa'])->get();
         return response()->json($espacios);
     }
 
@@ -40,7 +40,7 @@ class EspacioController extends Controller
 
     public function show(string $id)
     {
-        $espacio = Espacio::with(['tipoEspacio', 'bloque', 'tarifas.temporada', 'tarifas.tipoTarifa'])->findOrFail($id);
+        $espacio = Espacio::with(['tipoEspacio', 'bloque', 'tarifas.tipoTarifa'])->findOrFail($id);
         return response()->json($espacio);
     }
 

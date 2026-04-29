@@ -1,0 +1,29 @@
+### Obtener todos los tipos de espacio
+GET http://localhost:8081/api/tipo-espacios
+Authorization: Bearer {{token}}
+
+### Crear un tipo de espacio
+POST http://localhost:8081/api/tipo-espacios
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+    "nombre": "Estadio"
+}
+
+### Obtener un tipo de espacio específico
+GET http://localhost:8081/api/tipo-espacios/1
+Authorization: Bearer {{token}}
+
+### Actualizar un tipo de espacio
+PUT http://localhost:8081/api/tipo-espacios/1
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+    "nombre": "Gran Salón"
+}
+
+### Eliminar un tipo de espacio
+DELETE http://localhost:8081/api/tipo-espacios/1
+Authorization: Bearer {{token}}

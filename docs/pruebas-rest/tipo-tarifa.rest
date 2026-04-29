@@ -1,0 +1,29 @@
+### Obtener todos los tipos de tarifa
+GET http://localhost:8081/api/tipo-tarifas
+Authorization: Bearer {{token}}
+
+### Crear un tipo de tarifa
+POST http://localhost:8081/api/tipo-tarifas
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+    "nombre": "VIP"
+}
+
+### Obtener un tipo de tarifa específico
+GET http://localhost:8081/api/tipo-tarifas/1
+Authorization: Bearer {{token}}
+
+### Actualizar un tipo de tarifa
+PUT http://localhost:8081/api/tipo-tarifas/1
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+    "nombre": "Premium"
+}
+
+### Eliminar un tipo de tarifa
+DELETE http://localhost:8081/api/tipo-tarifas/1
+Authorization: Bearer {{token}}

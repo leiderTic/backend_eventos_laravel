@@ -1,0 +1,31 @@
+### Obtener todos los bloques
+GET http://localhost:8081/api/bloques
+Authorization: Bearer {{token}}
+
+### Crear un bloque
+POST http://localhost:8081/api/bloques
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+    "descripcion": "AZUL",
+    "color": "#3b82f6"
+}
+
+### Obtener un bloque específico
+GET http://localhost:8081/api/bloques/1
+Authorization: Bearer {{token}}
+
+### Actualizar un bloque
+PUT http://localhost:8081/api/bloques/1
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+    "descripcion": "ROJO INTENSO",
+    "color": "#ef4444"
+}
+
+### Eliminar un bloque
+DELETE http://localhost:8081/api/bloques/1
+Authorization: Bearer {{token}}

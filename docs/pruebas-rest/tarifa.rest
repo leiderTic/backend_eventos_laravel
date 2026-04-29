@@ -1,0 +1,33 @@
+### Obtener todas las tarifas
+GET http://localhost:8081/api/tarifas
+Authorization: Bearer {{token}}
+
+### Crear una tarifa
+POST http://localhost:8081/api/tarifas
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+    "precio_dia": 15000.50,
+    "tipo_tarifa_id": 1,
+    "espacio_id": 1
+}
+
+### Obtener una tarifa específica
+GET http://localhost:8081/api/tarifas/1
+Authorization: Bearer {{token}}
+
+### Actualizar una tarifa
+PUT http://localhost:8081/api/tarifas/1
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+    "precio_dia": 16000.00,
+    "tipo_tarifa_id": 1,
+    "espacio_id": 1
+}
+
+### Eliminar una tarifa
+DELETE http://localhost:8081/api/tarifas/1
+Authorization: Bearer {{token}}

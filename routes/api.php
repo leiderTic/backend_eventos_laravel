@@ -41,6 +41,12 @@ Route::middleware('auth:sanctum')->group(function () {
 
     // Espacios
     Route::apiResource('espacios', \App\Http\Controllers\EspacioController::class);
+
+    // Tipos y Extras
+    Route::apiResource('bloques', \App\Http\Controllers\BloqueController::class);
+    Route::apiResource('tipo-espacios', \App\Http\Controllers\TipoEspacioController::class);
+    Route::apiResource('tipo-tarifas', \App\Http\Controllers\TipoTarifaController::class);
+    Route::apiResource('tarifas', \App\Http\Controllers\TarifaController::class);
         
 });
 
