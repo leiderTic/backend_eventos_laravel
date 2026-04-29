@@ -20,8 +20,6 @@ Route::prefix('/v1/auth')->group(function () {
         Route::post('/logout', [AuthController::class, 'funLogout']);
         Route::get('/me', [AuthController::class, 'me']);
 
-        // Eventos
-        Route::apiResource('eventos', \App\Http\Controllers\EventoController::class);
         
         
     });
@@ -34,4 +32,8 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/cliente/contactos', [ClienteController::class, 'clienteContactos']);
     Route::get('/cliente/instituciones/{id}/contactos', [ClienteController::class, 'clienteInstitucionesContactos']);
     Route::apiResource('cliente', ClienteController::class);  
+
+    // Eventos
+    Route::apiResource('eventos', \App\Http\Controllers\EventoController::class);
+        
 });

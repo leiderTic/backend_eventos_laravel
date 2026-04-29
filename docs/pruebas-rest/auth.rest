@@ -7,6 +7,15 @@ Content-Type: application/json
     "username": "patricia.castillo",
     "password": "PC2026!"
 }
+###Autenticación de usuario(Login)
+POST http://localhost:8081/api/v1/auth/login
+Accept: application/json
+Content-Type: application/json
+
+{
+    "username": "rodney.miranda",
+    "password": "RM2026!"
+}
 
 ###CERRAR SESION
 POST http://localhost:8081/api/v1/auth/logout

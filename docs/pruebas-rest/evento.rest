@@ -1,9 +1,9 @@
 ### Obtener todos los eventos
-GET http://localhost:8000/api/v1/eventos
-Authorization: Bearer {{token}}
+GET http://localhost:8081/api/eventos
+Authorization: Bearer 2|e3jjas6MIvqz21XeVG1AfaPCQsvn5zSGbOQvNAPD2b1dcb77
 
-### Crear un evento
-POST http://localhost:8000/api/v1/eventos
+### Crear un evento 
+POST http://localhost:8081/api/eventos
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
@@ -12,11 +12,11 @@ Content-Type: application/json
 }
 
 ### Obtener un evento específico
-GET http://localhost:8000/api/v1/eventos/1
+GET http://localhost:8081/api/eventos/1
 Authorization: Bearer {{token}}
 
 ### Actualizar un evento
-PUT http://localhost:8000/api/v1/eventos/1
+PUT http://localhost:8081/api/eventos/1
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
@@ -25,5 +25,5 @@ Content-Type: application/json
 }
 
 ### Eliminar un evento
-DELETE http://localhost:8000/api/v1/eventos/1
+DELETE http://localhost:8081/api/eventos/1
 Authorization: Bearer {{token}}
