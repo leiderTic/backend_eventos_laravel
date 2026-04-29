@@ -1,0 +1,41 @@
+### Obtener todos los espacios
+GET http://localhost:8081/api/espacios
+Authorization: Bearer {{token}}
+
+### Crear un espacio
+POST http://localhost:8081/api/espacios
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+    "nombre": "Nuevo Salón VIP",
+    "descripcion": "Cocina y baños privados.",
+    "dias_max": null,
+    "area_m2": 1500.5,
+    "aforo": 400,
+    "tipo_espacio_id": 1,
+    "bloque_id": 3
+}
+
+### Obtener un espacio específico
+GET http://localhost:8081/api/espacios/1
+Authorization: Bearer {{token}}
+
+### Actualizar un espacio
+PUT http://localhost:8081/api/espacios/1
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+    "nombre": "Salón Potosí (Renovado)",
+    "descripcion": "Oficina organizador, depósito, wifi de alta velocidad y 2 baterías de baños.",
+    "dias_max": 2,
+    "area_m2": 2100,
+    "aforo": 600,
+    "tipo_espacio_id": 1,
+    "bloque_id": 1
+}
+
+### Eliminar un espacio
+DELETE http://localhost:8081/api/espacios/1
+Authorization: Bearer {{token}}

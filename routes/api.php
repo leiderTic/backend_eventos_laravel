@@ -38,5 +38,9 @@ Route::middleware('auth:sanctum')->group(function () {
 
     // Temporadas
     Route::apiResource('temporadas', \App\Http\Controllers\TemporadaController::class);
+
+    // Espacios
+    Route::apiResource('espacios', \App\Http\Controllers\EspacioController::class);
         
 });
+
