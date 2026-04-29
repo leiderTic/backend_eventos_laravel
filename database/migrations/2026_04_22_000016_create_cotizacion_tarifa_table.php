@@ -8,11 +8,11 @@ return new class extends Migration
 {
     public function up(): void
     {
-        Schema::create('cotizacion_espacio', function (Blueprint $table) {
+        Schema::create('cotizacion_tarifa', function (Blueprint $table) {
             $table->id();
             $table->decimal('dias', 10, 2);
             $table->decimal('precio_aplicado', 10, 2);
-            $table->foreignId('espacio_id')->constrained('espacios')->onDelete('cascade');
+            $table->foreignId('tarifa_id')->constrained('tarifas')->onDelete('cascade');
             $table->foreignId('cotizacion_id')->constrained('cotizaciones')->onDelete('cascade');
             $table->boolean('estado')->default(true);
             $table->timestamps();
@@ -21,6 +21,6 @@ return new class extends Migration
 
     public function down(): void
     {
-        Schema::dropIfExists('cotizacion_espacio');
+        Schema::dropIfExists('cotizacion_tarifa');
     }
 };

@@ -51,9 +51,9 @@ class Cotizacion extends Model
                     ->withTimestamps();
     }
 
-    public function espacios()
+    public function tarifas()
     {
-        return $this->belongsToMany(Espacio::class, 'cotizacion_espacio')
+        return $this->belongsToMany(Tarifa::class, 'cotizacion_tarifa')
                     ->withPivot('dias', 'precio_aplicado', 'estado')
                     ->withTimestamps();
     }

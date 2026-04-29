@@ -43,10 +43,4 @@ class Espacio extends Model
         return $this->hasMany(Tarifa::class);
     }
 
-    public function cotizaciones()
-    {
-        return $this->belongsToMany(Cotizacion::class, 'cotizacion_espacio')
-                    ->withPivot('dias', 'precio_aplicado')
-                    ->withTimestamps();
-    }
 }

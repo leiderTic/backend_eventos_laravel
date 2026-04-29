@@ -12,7 +12,6 @@ return new class extends Migration
             $table->id();
             $table->decimal('precio_dia', 10, 2);
             $table->foreignId('tipo_tarifa_id')->constrained('tipo_tarifas');
-            $table->foreignId('temporada_id')->constrained('temporadas');
             $table->foreignId('espacio_id')->constrained('espacios')->onDelete('cascade');
             $table->softDeletes();
             $table->timestamps();

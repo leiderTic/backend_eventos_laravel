@@ -130,22 +130,13 @@ class DataSeeder extends Seeder
                 ]
             );
 
-            // Crear las 4 tarifas (8 precios)
+            // Crear las 4 tarifas (basadas en los tipos)
             foreach ($tipoTarifasData as $index => $nombreTipo) {
                 $tipoId = $tipoTarifas[$nombreTipo];
                 
-                // Baja
                 Tarifa::create([
                     'tipo_tarifa_id' => $tipoId,
-                    'precio_dia' => $data['precios'][$index * 2],
-                    'temporada_id' => $tempBaja,
-                    'espacio_id' => $espacio->id,
-                ]);
-                // Alta
-                Tarifa::create([
-                    'tipo_tarifa_id' => $tipoId,
-                    'precio_dia' => $data['precios'][$index * 2 + 1],
-                    'temporada_id' => $tempAlta,
+                    'precio_dia' => $data['precios'][$index * 2], // Tomamos el primer precio
                     'espacio_id' => $espacio->id,
                 ]);
             }
