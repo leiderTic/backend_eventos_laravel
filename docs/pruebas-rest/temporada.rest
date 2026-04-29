@@ -1,0 +1,33 @@
+### Obtener todas las temporadas
+GET http://localhost:8081/api/temporadas
+Authorization: Bearer {{token}}
+
+### Crear una temporada
+POST http://localhost:8081/api/temporadas
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+    "descripcion": "Temporada Especial",
+    "mes_inicio": 4,
+    "mes_fin": 6
+}
+
+### Obtener una temporada específica
+GET http://localhost:8081/api/temporadas/1
+Authorization: Bearer {{token}}
+
+### Actualizar una temporada
+PUT http://localhost:8081/api/temporadas/1
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+    "descripcion": "Temporada Super Alta",
+    "mes_inicio": 11,
+    "mes_fin": 12
+}
+
+### Eliminar una temporada
+DELETE http://localhost:8081/api/temporadas/1
+Authorization: Bearer {{token}}
