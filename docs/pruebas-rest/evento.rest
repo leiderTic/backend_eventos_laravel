@@ -1,6 +1,6 @@
 ### Obtener todos los eventos
 GET http://localhost:8081/api/eventos
-Authorization: Bearer 2|e3jjas6MIvqz21XeVG1AfaPCQsvn5zSGbOQvNAPD2b1dcb77
+Authorization: Bearer 2|aR1h4PAQ7TJB3cKpTMV2t7tLYkdbmPV95aUqkGjV4f4954df
 
 ### Crear un evento 
 POST http://localhost:8081/api/eventos

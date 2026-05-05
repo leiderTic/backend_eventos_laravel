@@ -9,7 +9,7 @@ class TarifaController extends Controller
 {
     public function index()
     {
-        $tarifas = Tarifa::with(['tipoTarifa', 'espacio'])->get();
+        $tarifas = Tarifa::with(['tipoTarifa', 'temporada', 'espacio'])->get();
         return response()->json($tarifas);
     }
 
@@ -18,21 +18,23 @@ class TarifaController extends Controller
         $request->validate([
             'precio_dia' => 'required|numeric|min:0',
             'tipo_tarifa_id' => 'required|exists:tipo_tarifas,id',
+            'temporada_id' => 'required|exists:temporadas,id',
             'espacio_id' => 'required|exists:espacios,id',
         ]);
 
         $tarifa = Tarifa::create([
             'precio_dia' => $request->precio_dia,
             'tipo_tarifa_id' => $request->tipo_tarifa_id,
+            'temporada_id' => $request->temporada_id,
             'espacio_id' => $request->espacio_id,
         ]);
 
-        return response()->json($tarifa->load(['tipoTarifa', 'espacio']), 201);
+        return response()->json($tarifa->load(['tipoTarifa', 'temporada', 'espacio']), 201);
     }
 
     public function show(string $id)
     {
-        $tarifa = Tarifa::with(['tipoTarifa', 'espacio'])->findOrFail($id);
+        $tarifa = Tarifa::with(['tipoTarifa', 'temporada', 'espacio'])->findOrFail($id);
         return response()->json($tarifa);
     }
 
@@ -43,21 +45,23 @@ class TarifaController extends Controller
         $request->validate([
             'precio_dia' => 'required|numeric|min:0',
             'tipo_tarifa_id' => 'required|exists:tipo_tarifas,id',
+            'temporada_id' => 'required|exists:temporadas,id',
             'espacio_id' => 'required|exists:espacios,id',
         ]);
 
         $tarifa->update([
             'precio_dia' => $request->precio_dia,
             'tipo_tarifa_id' => $request->tipo_tarifa_id,
+            'temporada_id' => $request->temporada_id,
             'espacio_id' => $request->espacio_id,
         ]);
 
-        return response()->json($tarifa->load(['tipoTarifa', 'espacio']));
+        return response()->json($tarifa->load(['tipoTarifa', 'temporada', 'espacio']));
     }
 
-    public function getByEspacio(string $espacioId)
+    public function obtenerPorEspacio(string $espacioId)
     {
-        $tarifas = Tarifa::with(['tipoTarifa', 'espacio'])
+        $tarifas = Tarifa::with(['tipoTarifa', 'temporada', 'espacio'])
                          ->where('espacio_id', $espacioId)
                          ->get();
         return response()->json($tarifas);

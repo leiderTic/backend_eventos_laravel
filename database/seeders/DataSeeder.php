@@ -42,7 +42,7 @@ class DataSeeder extends Seeder
         $tempAlta = Temporada::where('descripcion', 'Temporada alta')->first()->id;
 
         // 4. Tipos de Tarifa
-        $tipoTarifasData = ['Social', 'Corporativo', 'Feria', 'Concierto'];
+        $tipoTarifasData = ['Evento Social', 'Evento Corporativo', 'Feria y Exposición', 'Conciertos y Espectáculos'];
         $tipoTarifas = [];
         foreach ($tipoTarifasData as $nombre) {
             $tipoTarifas[$nombre] = TipoTarifa::firstOrCreate(['nombre' => $nombre])->id;
@@ -130,13 +130,22 @@ class DataSeeder extends Seeder
                 ]
             );
 
-            // Crear las 4 tarifas (basadas en los tipos)
+            // Crear las 4 tarifas (8 precios)
             foreach ($tipoTarifasData as $index => $nombreTipo) {
                 $tipoId = $tipoTarifas[$nombreTipo];
                 
+                // Baja
                 Tarifa::create([
                     'tipo_tarifa_id' => $tipoId,
-                    'precio_dia' => $data['precios'][$index * 2], // Tomamos el primer precio
+                    'precio_dia' => $data['precios'][$index * 2],
+                    'temporada_id' => $tempBaja,
+                    'espacio_id' => $espacio->id,
+                ]);
+                // Alta
+                Tarifa::create([
+                    'tipo_tarifa_id' => $tipoId,
+                    'precio_dia' => $data['precios'][$index * 2 + 1],
+                    'temporada_id' => $tempAlta,
                     'espacio_id' => $espacio->id,
                 ]);
             }

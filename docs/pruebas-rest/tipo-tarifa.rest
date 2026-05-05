@@ -1,6 +1,6 @@
 ### Obtener todos los tipos de tarifa
 GET http://localhost:8081/api/tipo-tarifas
-Authorization: Bearer {{token}}
+Authorization: Bearer 3|0swGaL7rJ1BpACOd3ZZmJDLvVJSW1OAwbFjgu63x9ceca88c
 
 ### Crear un tipo de tarifa
 POST http://localhost:8081/api/tipo-tarifas
