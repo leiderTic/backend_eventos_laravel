@@ -19,14 +19,18 @@ GET http://localhost:8081/api/tarifas/espacio/1
 Authorization: Bearer 3|0swGaL7rJ1BpACOd3ZZmJDLvVJSW1OAwbFjgu63x9ceca88c
 
 ### Obtener tarifas por espacio específico (solo Temporada Baja)
-GET http://localhost:8081/api/tarifas/espacio/1/baja
+GET http://localhost:8081/api/tarifas/espacio/1/temporada/1
 Authorization: Bearer 2|9aZWrr4Ev0AMt89mxbWO69XFS2x5fJ7ffISDTjn726e3114a
 
 ### Obtener tarifas por espacio específico (solo Temporada Alta)
-GET http://localhost:8081/api/tarifas/espacio/1/alta
+GET http://localhost:8081/api/tarifas/espacio/1/temporada/2
 Content-Type: application/json
 Accept: application/json
-Authorization: 2|9aZWrr4Ev0AMt89mxbWO69XFS2x5fJ7ffISDTjn726e3114a
+Authorization: Bearer 2|9aZWrr4Ev0AMt89mxbWO69XFS2x5fJ7ffISDTjn726e3114a
+
+### Obtener tarifa por Espacio, Temporada y Tipo específico
+GET http://localhost:8081/api/tarifas/espacio/1/temporada/1/tipo/1
+Authorization: Bearer 2|9aZWrr4Ev0AMt89mxbWO69XFS2x5fJ7ffISDTjn726e3114a
 
 
 ### Obtener una tarifa específica
