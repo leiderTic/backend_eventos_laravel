@@ -8,9 +8,12 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-    "nombre": "Limpieza profunda",
-    "descripcion": "Limpieza de alfombras y vidrios",
-    "precio": 500.00
+    "codigo": "S20",
+    "nombre": "Servicio de Prueba",
+    "unidad": "Día",
+    "precio": 100.00,
+    "porEv": false,
+    "nota": "Prueba de nuevos campos"
 }
 
 ### Obtener un servicio específico

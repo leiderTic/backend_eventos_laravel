@@ -10,9 +10,12 @@ return new class extends Migration
     {
         Schema::create('servicios', function (Blueprint $table) {
             $table->id();
+            $table->string('codigo')->nullable();
             $table->string('nombre');
-            $table->text('descripcion')->nullable();
+            $table->string('unidad')->nullable();
             $table->decimal('precio', 10, 2);
+            $table->boolean('porEv')->default(false);
+            $table->text('nota')->nullable();
             $table->softDeletes();
             $table->timestamps();
         });

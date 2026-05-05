@@ -13,13 +13,17 @@ class Servicio extends Model
     protected $table = 'servicios';
 
     protected $fillable = [
+        'codigo',
         'nombre',
-        'descripcion',
+        'unidad',
         'precio',
+        'porEv',
+        'nota',
     ];
 
     protected $casts = [
         'precio' => 'decimal:2',
+        'porEv' => 'boolean',
     ];
 
     public function cotizaciones()

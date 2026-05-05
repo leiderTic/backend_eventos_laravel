@@ -16,16 +16,15 @@ class ServicioController extends Controller
     public function store(Request $request)
     {
         $request->validate([
+            'codigo' => 'nullable|string|max:10',
             'nombre' => 'required|string|max:255',
-            'descripcion' => 'nullable|string',
+            'unidad' => 'nullable|string|max:50',
             'precio' => 'required|numeric|min:0',
+            'porEv' => 'boolean',
+            'nota' => 'nullable|string',
         ]);
 
-        $servicio = Servicio::create([
-            'nombre' => $request->nombre,
-            'descripcion' => $request->descripcion,
-            'precio' => $request->precio,
-        ]);
+        $servicio = Servicio::create($request->all());
 
         return response()->json($servicio, 201);
     }
@@ -41,16 +40,15 @@ class ServicioController extends Controller
         $servicio = Servicio::findOrFail($id);
 
         $request->validate([
+            'codigo' => 'nullable|string|max:10',
             'nombre' => 'required|string|max:255',
-            'descripcion' => 'nullable|string',
+            'unidad' => 'nullable|string|max:50',
             'precio' => 'required|numeric|min:0',
+            'porEv' => 'boolean',
+            'nota' => 'nullable|string',
         ]);
 
-        $servicio->update([
-            'nombre' => $request->nombre,
-            'descripcion' => $request->descripcion,
-            'precio' => $request->precio,
-        ]);
+        $servicio->update($request->all());
 
         return response()->json($servicio);
     }
