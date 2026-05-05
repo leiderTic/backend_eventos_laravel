@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Cotizacion;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class CotizacionController extends Controller
 {
@@ -143,5 +144,12 @@ class CotizacionController extends Controller
         $cotizacion = Cotizacion::findOrFail($id);
         $cotizacion->delete();
         return response()->json(['message' => 'Cotización eliminada correctamente']);
+    }
+
+    public function preview(Request $request)
+    {
+        $cotizacion = $request->all();
+        $pdf = Pdf::loadView('cotizaciones.pdf', compact('cotizacion'));
+        return $pdf->stream('preview.pdf');
     }
 }
