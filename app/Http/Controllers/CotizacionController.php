@@ -41,7 +41,7 @@ class CotizacionController extends Controller
                 'fecha_ini' => $request->fecha_ini,
                 'fecha_fin' => $request->fecha_fin,
                 'paso' => 1,
-                'user_id' => auth()->id() ?? 1,
+                'user_id' => \Illuminate\Support\Facades\Auth::id() ?? 1,
                 'evento_id' => $request->evento_id,
             ]);
 
