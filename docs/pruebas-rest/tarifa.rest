@@ -4,8 +4,9 @@ Authorization: Bearer 3|pbvTvAmasczw5FJaBJpUCaas3pYyKbRh33GSamG0be19106a
 
 ### Crear una tarifa
 POST http://localhost:8081/api/tarifas
-Authorization: Bearer {{token}}
+Authorization: Bearer 8|cEKJw7uZYbRWRfRaiPNJZ92bDtMuWUnaTJKG94Ft9dfa11c2
 Content-Type: application/json
+Accept: application/json
 
 {
     "precio_dia": 15000.50,
@@ -13,15 +14,24 @@ Content-Type: application/json
     "espacio_id": 1
 }
 
-### Obtener tarifas por espacio específico
+### Obtener tarifas por espacio específico (todas)
 GET http://localhost:8081/api/tarifas/espacio/1
-Content-Type: application/json
-Accept: application/json
-Authorization: 7|pbvTvAmasczw5FJaBJpUCaas3pYyKbRh33GSamG0be19106a
+Authorization: Bearer 3|0swGaL7rJ1BpACOd3ZZmJDLvVJSW1OAwbFjgu63x9ceca88c
+
+### Obtener tarifas por espacio específico (solo Temporada Baja)
+GET http://localhost:8081/api/tarifas/espacio/1/baja
+Authorization: Bearer 3|0swGaL7rJ1BpACOd3ZZmJDLvVJSW1OAwbFjgu63x9ceca88c
+
+### Obtener tarifas por espacio específico (solo Temporada Alta)
+GET http://localhost:8081/api/tarifas/espacio/1/alta
+Authorization: Bearer 3|0swGaL7rJ1BpACOd3ZZmJDLvVJSW1OAwbFjgu63x9ceca88cept: application/json
+Authorization: Bearer 8|cEKJw7uZYbRWRfRaiPNJZ92bDtMuWUnaTJKG94Ft9dfa11c2
 
 ### Obtener una tarifa específica
 GET http://localhost:8081/api/tarifas/1
-Authorization: 7|pbvTvAmasczw5FJaBJpUCaas3pYyKbRh33GSamG0be19106a
+Content-Type: application/json
+Accept: application/json
+Authorization: 8|cEKJw7uZYbRWRfRaiPNJZ92bDtMuWUnaTJKG94Ft9dfa11c2
 
 ### Actualizar una tarifa
 PUT http://localhost:8081/api/tarifas/1

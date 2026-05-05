@@ -59,10 +59,32 @@ class TarifaController extends Controller
         return response()->json($tarifa->load(['tipoTarifa', 'temporada', 'espacio']));
     }
 
-    public function obtenerPorEspacio(string $espacioId)
+    public function getByEspacio(string $espacioId)
     {
         $tarifas = Tarifa::with(['tipoTarifa', 'temporada', 'espacio'])
                          ->where('espacio_id', $espacioId)
+                         ->get();
+        return response()->json($tarifas);
+    }
+
+    public function getBajasByEspacio(string $espacioId)
+    {
+        $tarifas = Tarifa::with(['tipoTarifa', 'temporada', 'espacio'])
+                         ->where('espacio_id', $espacioId)
+                         ->whereHas('temporada', function ($query) {
+                             $query->where('descripcion', 'Temporada baja');
+                         })
+                         ->get();
+        return response()->json($tarifas);
+    }
+
+    public function getAltasByEspacio(string $espacioId)
+    {
+        $tarifas = Tarifa::with(['tipoTarifa', 'temporada', 'espacio'])
+                         ->where('espacio_id', $espacioId)
+                         ->whereHas('temporada', function ($query) {
+                             $query->where('descripcion', 'Temporada alta');
+                         })
                          ->get();
         return response()->json($tarifas);
     }
