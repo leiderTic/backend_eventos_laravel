@@ -49,6 +49,7 @@ Route::middleware('auth:sanctum')->group(function () {
     
     // Tarifas
     Route::get('tarifas/espacio/{espacioId}', [\App\Http\Controllers\TarifaController::class, 'getByEspacio']);
+    Route::get('tarifas/espacio/{espacioId}/temporada/{temporadaId}', [\App\Http\Controllers\TarifaController::class, 'getByEspacioAndTemporada']);
     Route::get('tarifas/espacio/{espacioId}/baja', [\App\Http\Controllers\TarifaController::class, 'getBajasByEspacio']);
     Route::get('tarifas/espacio/{espacioId}/alta', [\App\Http\Controllers\TarifaController::class, 'getAltasByEspacio']);
     Route::apiResource('tarifas', \App\Http\Controllers\TarifaController::class);
