@@ -1,0 +1,40 @@
+### Obtener todas las cotizaciones
+GET http://localhost:8081/api/cotizaciones
+Authorization: Bearer {{token}}
+
+### Crear una cotización completa
+POST http://localhost:8081/api/cotizaciones
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+    "descripcion": "Evento Cumpleaños Juan",
+    "fecha_ini": "2026-10-10",
+    "fecha_fin": "2026-10-12",
+    "evento_id": 1,
+    "clientes": [
+        {"id": 1}
+    ],
+    "tarifas": [
+        {
+            "id": 1,
+            "dias": 2,
+            "precio_aplicado": 10000.00
+        }
+    ],
+    "servicios": [
+        {
+            "id": 1,
+            "cantidad": 1,
+            "precio_aplicado": 750.00
+        }
+    ]
+}
+
+### Obtener una cotización específica
+GET http://localhost:8081/api/cotizaciones/1
+Authorization: Bearer {{token}}
+
+### Eliminar una cotización
+DELETE http://localhost:8081/api/cotizaciones/1
+Authorization: Bearer {{token}}

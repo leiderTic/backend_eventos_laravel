@@ -1,0 +1,33 @@
+### Obtener todos los servicios
+GET http://localhost:8081/api/servicios
+Authorization: Bearer {{token}}
+
+### Crear un servicio
+POST http://localhost:8081/api/servicios
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+    "nombre": "Limpieza profunda",
+    "descripcion": "Limpieza de alfombras y vidrios",
+    "precio": 500.00
+}
+
+### Obtener un servicio específico
+GET http://localhost:8081/api/servicios/1
+Authorization: Bearer {{token}}
+
+### Actualizar un servicio
+PUT http://localhost:8081/api/servicios/1
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+    "nombre": "Limpieza Premium",
+    "descripcion": "Incluye desinfección total",
+    "precio": 750.00
+}
+
+### Eliminar un servicio
+DELETE http://localhost:8081/api/servicios/1
+Authorization: Bearer {{token}}
