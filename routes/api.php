@@ -52,6 +52,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('tarifas/espacio/{espacioId}/temporada/{temporadaId}', [\App\Http\Controllers\TarifaController::class, 'getByEspacioAndTemporada']);
     Route::get('tarifas/espacio/{espacioId}/baja', [\App\Http\Controllers\TarifaController::class, 'getBajasByEspacio']);
     Route::get('tarifas/espacio/{espacioId}/alta', [\App\Http\Controllers\TarifaController::class, 'getAltasByEspacio']);
+    Route::get('tarifas/espacio/{espacioId}', [\App\Http\Controllers\TarifaController::class, 'getByEspacio']);
     Route::apiResource('tarifas', \App\Http\Controllers\TarifaController::class);
 
     // Cotizaciones y Servicios
@@ -59,3 +60,4 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('cotizaciones/preview', [\App\Http\Controllers\CotizacionController::class, 'preview']);
     Route::apiResource('cotizaciones', \App\Http\Controllers\CotizacionController::class);
 });
+

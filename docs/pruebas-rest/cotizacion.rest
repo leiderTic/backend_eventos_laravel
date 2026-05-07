@@ -38,3 +38,20 @@ Authorization: Bearer {{token}}
 ### Eliminar una cotización
 DELETE http://localhost:8081/api/cotizaciones/1
 Authorization: Bearer {{token}}
+
+### Preview PDF de Cotización (Simulado)
+POST http://localhost:8081/api/cotizaciones/preview
+Authorization: Bearer 2|9aZWrr4Ev0AMt89mxbWO69XFS2x5fJ7ffISDTjn726e3114a
+Content-Type: application/json
+
+{
+    "descripcion": "Preview de Evento Corporativo",
+    "fecha_ini": "2026-12-01",
+    "fecha_fin": "2026-12-05",
+    "tarifas": [
+        { "id": 1, "dias": 4, "precio_aplicado": 5000.00 }
+    ],
+    "servicios": [
+        { "id": 1, "cantidad": 10, "precio_aplicado": 15.00 }
+    ]
+}

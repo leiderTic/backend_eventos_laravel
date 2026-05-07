@@ -5,7 +5,9 @@ namespace App\Http\Controllers;
 use App\Models\Cotizacion;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Barryvdh\DomPDF\Facade\Pdf;
+use Illuminate\Support\Facades\Auth;
 
 class CotizacionController extends Controller
 {
@@ -29,6 +31,7 @@ class CotizacionController extends Controller
             'servicios' => 'nullable|array',
             'servicios.*.id' => 'required|exists:servicios,id',
             'servicios.*.cantidad' => 'required|numeric|min:0',
+            'servicios.*.dias' => 'required|numeric|min:1',
             'servicios.*.precio_aplicado' => 'required|numeric|min:0',
             'tarifas' => 'nullable|array',
             'tarifas.*.id' => 'required|exists:tarifas,id',
@@ -42,14 +45,16 @@ class CotizacionController extends Controller
                 'fecha_ini' => $request->fecha_ini,
                 'fecha_fin' => $request->fecha_fin,
                 'paso' => 1,
-                'user_id' => \Illuminate\Support\Facades\Auth::id() ?? 1,
+                'user_id' => Auth::id() ?? 1,
                 'evento_id' => $request->evento_id,
             ]);
 
             if ($request->has('clientes')) {
                 $syncData = [];
                 foreach ($request->clientes as $cliente) {
-                    $syncData[$cliente['id']] = ['estado' => true];
+                    if (isset($cliente['id']) && $cliente['id']) {
+                        $syncData[$cliente['id']] = ['estado' => true];
+                    }
                 }
                 $cotizacion->clientes()->sync($syncData);
             }
@@ -59,6 +64,7 @@ class CotizacionController extends Controller
                 foreach ($request->servicios as $servicio) {
                     $syncData[$servicio['id']] = [
                         'cantidad' => $servicio['cantidad'],
+                        'dias' => $servicio['dias'],
                         'precio_aplicado' => $servicio['precio_aplicado'],
                         'estado' => true
                     ];
@@ -148,8 +154,35 @@ class CotizacionController extends Controller
 
     public function preview(Request $request)
     {
-        $cotizacion = $request->all();
-        $pdf = Pdf::loadView('cotizaciones.pdf', compact('cotizacion'));
-        return $pdf->stream('preview.pdf');
+        try {
+            app()->setLocale('es');
+            $cotizacion = $request->all();
+            
+            // Cargar Logo como Base64 para máxima compatibilidad con DomPDF
+            $logoPath = public_path('image/logo.png');
+            $logoBase64 = '';
+            if (file_exists($logoPath)) {
+                $type = pathinfo($logoPath, PATHINFO_EXTENSION);
+                $data = file_get_contents($logoPath);
+                $logoBase64 = 'data:image/' . $type . ';base64,' . base64_encode($data);
+            }
+
+            // Configuración para optimizar rendimiento y compatibilidad
+            $pdf = Pdf::loadView('cotizaciones.pdf', compact('cotizacion', 'logoBase64'))
+                ->setPaper('a4', 'portrait')
+                ->setOptions([
+                    'isHtml5ParserEnabled' => true,
+                    'isRemoteEnabled' => true,
+                    'defaultFont' => 'sans-serif'
+                ]);
+
+            return $pdf->stream('preview.pdf');
+        } catch (\Exception $e) {
+            \Log::error("Error en PDF Preview: " . $e->getMessage());
+            return response()->json([
+                'error' => 'Error al generar el PDF',
+                'message' => $e->getMessage()
+            ], 500);
+        }
     }
 }
