@@ -17,6 +17,8 @@ class Cliente extends Model
         'nombre',
         'correo',
         'telefono',
+        'telefono_codigo',
+        'telefono_fijo',
         'tipo_cliente_id',
         'cliente_id',
     ];

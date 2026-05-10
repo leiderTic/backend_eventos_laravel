@@ -10,6 +10,8 @@ return new class extends Migration
     {
         Schema::create("cotizaciones", function (Blueprint $table) {
             $table->id();
+            $table->string("codigo", 50)->unique();
+            $table->integer("correlativo");
             $table->text("descripcion")->nullable();
             $table->date("fecha_ini");
             $table->date("fecha_fin");

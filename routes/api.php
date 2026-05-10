@@ -45,10 +45,10 @@ Route::middleware('auth:sanctum')->group(function () {
     // Tipos y Extras
     Route::apiResource('bloques', \App\Http\Controllers\BloqueController::class);
     Route::apiResource('tipo-espacios', \App\Http\Controllers\TipoEspacioController::class);
-    Route::apiResource('tipo-tarifas', \App\Http\Controllers\TipoTarifaController::class);
+
     
     // Tarifas
-    Route::get('tarifas/espacio/{espacioId}/temporada/{temporadaId}/tipo/{tipoId}', [\App\Http\Controllers\TarifaController::class, 'getByFiltro']);
+    Route::get('tarifas/espacio/{espacioId}/temporada/{temporadaId}/evento/{eventoId}', [\App\Http\Controllers\TarifaController::class, 'getByFiltro']);
     Route::get('tarifas/espacio/{espacioId}/temporada/{temporadaId}', [\App\Http\Controllers\TarifaController::class, 'getByEspacioAndTemporada']);
     Route::get('tarifas/espacio/{espacioId}/baja', [\App\Http\Controllers\TarifaController::class, 'getBajasByEspacio']);
     Route::get('tarifas/espacio/{espacioId}/alta', [\App\Http\Controllers\TarifaController::class, 'getAltasByEspacio']);

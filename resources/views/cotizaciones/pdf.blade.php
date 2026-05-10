@@ -46,6 +46,7 @@
         }
         .banner-title { display: table-cell; font-size: 11px; font-weight: 800; letter-spacing: 1.5px; text-transform: uppercase; vertical-align: middle; }
         .banner-code { display: table-cell; text-align: right; font-size: 12px; font-weight: 800; vertical-align: middle; color: white; }
+        .text-preview { color: #f87171 !important; font-style: italic; letter-spacing: 0.5px; }
 
         /* Meta Grid */
         .meta-table { width: 100%; border-collapse: collapse; margin-bottom: 15px; table-layout: fixed; }
@@ -163,7 +164,7 @@
         <!-- banner -->
         <div class="banner">
             <div class="banner-title">Cotización de Arrendamiento</div>
-            <div class="banner-code">COT-2026-{{ str_pad(rand(1, 999), 3, '0', STR_PAD_LEFT) }}</div>
+            <div class="banner-code @if(isset($cotizacion['is_preview'])) text-preview @endif">{{ $cotizacion['codigo'] ?? 'COT-000/2026' }}</div>
         </div>
 
         <!-- Meta info -->
@@ -218,7 +219,7 @@
                 @foreach($cotizacion['espacios'] ?? [] as $espacio)
                 <tr>
                     <td class="item-name">{{ $espacio['nombre'] }}</td>
-                    <td>{{ $espacio['tarifa_nombre'] ?? '-' }}</td>
+                    <td>{{ $cotizacion['tipo_evento_nombre'] ?? '-' }}</td>
                     <td class="col-right">Bs {{ number_format($espacio['precio_dia'], 2, ',', '.') }}</td>
                     <td class="col-right">{{ $espacio['dias'] }}</td>
                     <td class="col-subtotal">Bs {{ number_format($espacio['subtotal'], 2, ',', '.') }}</td>
@@ -282,7 +283,7 @@
             <tr>
                 <td>Campo Ferial Chuquiago Marka - Gestión 2026</td>
                 <td class="footer-center">www.chuquiagomarka.com.bo - www.ucpp.gob.bo</td>
-                <td class="footer-right">COT-2026-004</td>
+                <td class="footer-right @if(isset($cotizacion['is_preview'])) text-preview @endif">{{ $cotizacion['codigo'] ?? 'COT-000/2026' }}</td>
             </tr>
         </table>
         <div class="brand-stripes">

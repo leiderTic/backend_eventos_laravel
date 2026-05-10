@@ -31,12 +31,15 @@ class ClienteSeeder extends Seeder
         foreach ($nombresInstituciones as $nombre) {
             $inst = Cliente::factory()->create([
                 'nombre' => $nombre,
-                'tipo_cliente_id' => $tipoEmpresa->id
+                'tipo_cliente_id' => $tipoEmpresa->id,
+                'telefono_codigo' => '591',
+                'telefono_fijo' => '2' . rand(2000000, 2999999) // Fijo paceño falso
             ]);
 
             Cliente::factory()->count(rand(1, 3))->create([
                 'tipo_cliente_id' => $tipoContacto->id,
-                'cliente_id' => $inst->id // Auto-referencia
+                'cliente_id' => $inst->id, // Auto-referencia
+                'telefono_codigo' => '591' // Contactos celulares
             ]);
         }
     }

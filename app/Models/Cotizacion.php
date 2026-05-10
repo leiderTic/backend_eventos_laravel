@@ -11,6 +11,8 @@ class Cotizacion extends Model
     protected $table = "cotizaciones";
 
     protected $fillable = [
+        "codigo",
+        "correlativo",
         "descripcion",
         "fecha_ini",
         "fecha_fin",

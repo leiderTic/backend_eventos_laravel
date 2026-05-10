@@ -1,10 +1,12 @@
 ### Obtener todos los servicios
 GET http://localhost:8081/api/servicios
-Authorization: Bearer {{token}}
+Authorization: bearer 1|ZO900hRoOi7N9yEWdi6LTpkQNynbIJ832LgpQemo75ac86ea
+Content-Type: application/json
+Accept: application/json
 
 ### Crear un servicio
 POST http://localhost:8081/api/servicios
-Authorization: Bearer {{token}}
+Authorization: Bearer 2|9aZWrr4Ev0AMt89mxbWO69XFS2x5fJ7ffISDTjn726e3114a
 Content-Type: application/json
 
 {

@@ -32,6 +32,8 @@ class ClienteController extends Controller
             'nombre' => 'required|string|max:255',
             'correo' => 'nullable|email|max:255|unique:clientes,correo',
             'telefono' => 'nullable|string|max:20',
+            'telefono_codigo' => 'nullable|string|max:10',
+            'telefono_fijo' => 'nullable|string|max:30',
             'tipo_cliente_id' => 'required|exists:tipo_clientes,id',
             'cliente_id' => 'nullable|exists:clientes,id',
         ]);
@@ -52,6 +54,8 @@ class ClienteController extends Controller
             'nombre' => 'required|string|max:255',
             'correo' => 'nullable|email|max:255|unique:clientes,correo,' . $cliente->id,
             'telefono' => 'nullable|string|max:20',
+            'telefono_codigo' => 'nullable|string|max:10',
+            'telefono_fijo' => 'nullable|string|max:30',
             'tipo_cliente_id' => 'required|exists:tipo_clientes,id',
             'cliente_id' => 'nullable|exists:clientes,id',
         ]);

@@ -13,7 +13,7 @@ class CotizacionController extends Controller
 {
     public function index()
     {
-        $cotizaciones = Cotizacion::with(['user', 'evento', 'clientes', 'servicios', 'tarifas.tipoTarifa', 'tarifas.espacio'])
+        $cotizaciones = Cotizacion::with(['user', 'evento', 'clientes', 'servicios', 'tarifas.evento', 'tarifas.espacio'])
             ->orderBy('created_at', 'desc')
             ->get();
         return response()->json($cotizaciones);
@@ -40,12 +40,26 @@ class CotizacionController extends Controller
         ]);
 
         return DB::transaction(function () use ($request) {
+            $userId = Auth::id() ?? 1;
+            $user = \App\Models\User::find($userId);
+            $anioActual = date('Y');
+
+            $maxCorrelativo = Cotizacion::where('user_id', $userId)
+                ->whereYear('created_at', $anioActual)
+                ->max('correlativo');
+
+            $siguienteCorrelativo = $maxCorrelativo ? $maxCorrelativo + 1 : 1;
+            $correlativoFormateado = str_pad($siguienteCorrelativo, 3, '0', STR_PAD_LEFT);
+            $codigo = 'COT-' . $user->alias . '-' . $correlativoFormateado . '/' . $anioActual;
+
             $cotizacion = Cotizacion::create([
+                'codigo' => $codigo,
+                'correlativo' => $siguienteCorrelativo,
                 'descripcion' => $request->descripcion,
                 'fecha_ini' => $request->fecha_ini,
                 'fecha_fin' => $request->fecha_fin,
                 'paso' => 1,
-                'user_id' => Auth::id() ?? 1,
+                'user_id' => $userId,
                 'evento_id' => $request->evento_id,
             ]);
 
@@ -90,7 +104,7 @@ class CotizacionController extends Controller
 
     public function show(string $id)
     {
-        $cotizacion = Cotizacion::with(['user', 'evento', 'clientes', 'servicios', 'tarifas.tipoTarifa', 'tarifas.espacio'])
+        $cotizacion = Cotizacion::with(['user', 'evento', 'clientes', 'servicios', 'tarifas.evento', 'tarifas.espacio'])
             ->findOrFail($id);
         return response()->json($cotizacion);
     }
@@ -157,6 +171,121 @@ class CotizacionController extends Controller
         try {
             app()->setLocale('es');
             $cotizacion = $request->all();
+            
+            if(!isset($cotizacion['codigo'])) {
+                $cotizacion['codigo'] = 'NO REGISTRADO - VISTA PREVIA';
+                $cotizacion['is_preview'] = true;
+            }
+
+            // 1. Hidratar Evento
+            $evento = \App\Models\Evento::find($cotizacion['evento_id'] ?? null);
+            $cotizacion['tipo_evento_nombre'] = $evento ? $evento->descripcion : 'Evento Desconocido';
+            
+            // Rango de fechas
+            $fIni = isset($cotizacion['fecha_ini']) ? \Carbon\Carbon::parse($cotizacion['fecha_ini'])->translatedFormat('d \d\e F \d\e Y') : date('d \d\e F \d\e Y');
+            $fFin = isset($cotizacion['fecha_fin']) ? \Carbon\Carbon::parse($cotizacion['fecha_fin'])->translatedFormat('d \d\e F \d\e Y') : date('d \d\e F \d\e Y');
+            $cotizacion['fecha_rango'] = $fIni . ' al ' . $fFin;
+            $cotizacion['temporada_label'] = 'Vista Previa';
+
+            // 2. Hidratar Clientes (Buscar temporal o numérico)
+            $clientePrincipal = null;
+            $contactoInfo = null;
+
+            if (!empty($cotizacion['clientes'])) {
+                $cData = $cotizacion['clientes'][0];
+                if (isset($cData['id']) && is_numeric($cData['id'])) {
+                    $clientePrincipal = \App\Models\Cliente::find($cData['id']);
+                } else {
+                    $clientePrincipal = (object) $cData; // Soporte para clientes inyectados en vista previa
+                }
+                
+                if (isset($cotizacion['clientes'][1])) {
+                    $contData = $cotizacion['clientes'][1];
+                    if (isset($contData['id']) && is_numeric($contData['id'])) {
+                        $contactoInfo = \App\Models\Cliente::find($contData['id']);
+                    } else {
+                        $contactoInfo = (object) $contData;
+                    }
+                } else {
+                    $contactoInfo = $clientePrincipal;
+                }
+            }
+
+            if ($clientePrincipal && isset($clientePrincipal->nombre)) {
+                $cotizacion['entidad_nombre'] = $clientePrincipal->nombre;
+                $cotizacion['nit'] = $clientePrincipal->ci_nit ?? $clientePrincipal->nit ?? '-';
+                
+                // Buscar telefono en el contacto o en el cliente
+                $telObj = (isset($contactoInfo->telefono) && $contactoInfo->telefono) ? $contactoInfo : $clientePrincipal;
+                $tel = $telObj->telefono ?? $telObj->telefono_fijo ?? '';
+                if ($tel && !empty($telObj->telefono_codigo)) {
+                    $tel = '+' . $telObj->telefono_codigo . ' ' . $tel;
+                } elseif ($tel && is_numeric($telObj->id ?? '')) {
+                    $tel = '+591 ' . $tel; // Fallback
+                }
+                $cotizacion['telefono'] = $tel ?: '-';
+                
+                $cotizacion['contacto_nombre'] = $contactoInfo->nombre ?? 'Contacto';
+            } else {
+                $cotizacion['entidad_nombre'] = 'Cliente (En borrador)';
+                $cotizacion['nit'] = '-';
+                $cotizacion['telefono'] = '-';
+                $cotizacion['contacto_nombre'] = 'Contacto (En borrador)';
+            }
+
+            // 3. Hidratar Espacios a partir de Tarifas
+            $totalDias = 0;
+            $subtotalEspacios = 0;
+            $espaciosMapeados = [];
+            if (!empty($cotizacion['tarifas'])) {
+                foreach ($cotizacion['tarifas'] as $tarifa) {
+                    $tarifaModel = \App\Models\Tarifa::with('espacio')->find($tarifa['id'] ?? null);
+                    $nombreEspacio = ($tarifaModel && $tarifaModel->espacio) ? $tarifaModel->espacio->nombre : 'Espacio Borrador';
+                    
+                    $dias = floatval($tarifa['dias'] ?? 1);
+                    $precio = floatval($tarifa['precio_aplicado'] ?? 0);
+                    $sub = $dias * $precio;
+                    $subtotalEspacios += $sub;
+                    if ($dias > $totalDias) $totalDias = $dias;
+
+                    $espaciosMapeados[] = [
+                        'nombre' => $nombreEspacio,
+                        'precio_dia' => $precio,
+                        'dias' => $dias,
+                        'subtotal' => $sub
+                    ];
+                }
+            }
+            $cotizacion['espacios'] = $espaciosMapeados;
+            $cotizacion['total_dias'] = $totalDias > 0 ? $totalDias : 1;
+            $cotizacion['subtotal_espacios'] = $subtotalEspacios;
+
+            // 4. Hidratar Servicios
+            $subtotalServicios = 0;
+            $serviciosMapeados = [];
+            if (!empty($cotizacion['servicios'])) {
+                foreach ($cotizacion['servicios'] as $servicio) {
+                    $servicioModel = \App\Models\Servicio::find($servicio['id'] ?? null);
+                    $nombreServicio = $servicioModel ? $servicioModel->nombre : 'Servicio Borrador';
+                    
+                    $cantidad = floatval($servicio['cantidad'] ?? 1);
+                    $dias = floatval($servicio['dias'] ?? 1);
+                    $precio = floatval($servicio['precio_aplicado'] ?? 0);
+                    $sub = $cantidad * $dias * $precio;
+                    $subtotalServicios += $sub;
+
+                    $serviciosMapeados[] = [
+                        'nombre' => $nombreServicio,
+                        'cantidad' => $cantidad,
+                        'dias' => $dias,
+                        'precio' => $precio,
+                        'subtotal' => $sub
+                    ];
+                }
+            }
+            $cotizacion['servicios'] = $serviciosMapeados;
+            $cotizacion['subtotal_servicios'] = $subtotalServicios;
+            $cotizacion['total'] = $subtotalEspacios + $subtotalServicios;
             
             // Cargar Logo como Base64 para máxima compatibilidad con DomPDF
             $logoPath = public_path('image/logo.png');

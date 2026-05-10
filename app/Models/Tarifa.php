@@ -14,7 +14,7 @@ class Tarifa extends Model
 
     protected $fillable = [
         'precio_dia',
-        'tipo_tarifa_id',
+        'evento_id',
         'temporada_id',
         'espacio_id',
     ];
@@ -23,9 +23,9 @@ class Tarifa extends Model
         'precio_dia' => 'decimal:2',
     ];
 
-    public function tipoTarifa()
+    public function evento()
     {
-        return $this->belongsTo(TipoTarifa::class);
+        return $this->belongsTo(Evento::class);
     }
 
     public function temporada()

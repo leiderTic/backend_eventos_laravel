@@ -20,4 +20,9 @@ class Evento extends Model
     {
         return $this->hasMany(Cotizacion::class);
     }
+
+    public function tarifas()
+    {
+        return $this->hasMany(Tarifa::class);
+    }
 }

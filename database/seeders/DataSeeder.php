@@ -7,7 +7,6 @@ use App\Models\Espacio;
 use App\Models\Tarifa;
 use App\Models\Temporada;
 use App\Models\TipoEspacio;
-use App\Models\TipoTarifa;
 use Illuminate\Database\Seeder;
 
 class DataSeeder extends Seeder
@@ -41,11 +40,11 @@ class DataSeeder extends Seeder
         $tempBaja = Temporada::where('descripcion', 'Temporada baja')->first()->id;
         $tempAlta = Temporada::where('descripcion', 'Temporada alta')->first()->id;
 
-        // 4. Tipos de Tarifa
-        $tipoTarifasData = ['Evento Social', 'Evento Corporativo', 'Feria y Exposición', 'Conciertos y Espectáculos'];
-        $tipoTarifas = [];
-        foreach ($tipoTarifasData as $nombre) {
-            $tipoTarifas[$nombre] = TipoTarifa::firstOrCreate(['nombre' => $nombre])->id;
+        // 4. Eventos (Categorías de Tarifa)
+        $eventosData = ['Evento Social', 'Evento Corporativo', 'Feria y Exposición', 'Conciertos y Espectáculos'];
+        $eventos = [];
+        foreach ($eventosData as $nombre) {
+            $eventos[$nombre] = \App\Models\Evento::firstOrCreate(['descripcion' => $nombre])->id;
         }
 
         // 5. Datos de Espacios y Tarifas
@@ -130,20 +129,20 @@ class DataSeeder extends Seeder
                 ]
             );
 
-            // Crear las 4 tarifas (8 precios)
-            foreach ($tipoTarifasData as $index => $nombreTipo) {
-                $tipoId = $tipoTarifas[$nombreTipo];
+            // Crear las 4 tarifas (8 precios) basándose en los Eventos creados
+            foreach ($eventosData as $index => $nombreEvento) {
+                $eventoId = $eventos[$nombreEvento];
                 
                 // Baja
                 Tarifa::create([
-                    'tipo_tarifa_id' => $tipoId,
+                    'evento_id' => $eventoId,
                     'precio_dia' => $data['precios'][$index * 2],
                     'temporada_id' => $tempBaja,
                     'espacio_id' => $espacio->id,
                 ]);
                 // Alta
                 Tarifa::create([
-                    'tipo_tarifa_id' => $tipoId,
+                    'evento_id' => $eventoId,
                     'precio_dia' => $data['precios'][$index * 2 + 1],
                     'temporada_id' => $tempAlta,
                     'espacio_id' => $espacio->id,
