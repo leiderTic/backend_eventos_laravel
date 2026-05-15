@@ -58,6 +58,7 @@ Route::middleware('auth:sanctum')->group(function () {
     // Cotizaciones y Servicios
     Route::apiResource('servicios', \App\Http\Controllers\ServicioController::class);
     Route::post('cotizaciones/preview', [\App\Http\Controllers\CotizacionController::class, 'preview']);
+    Route::get('cotizaciones/{id}/imprimir', [\App\Http\Controllers\CotizacionController::class, 'imprimir']);
     Route::apiResource('cotizaciones', \App\Http\Controllers\CotizacionController::class);
 });
 

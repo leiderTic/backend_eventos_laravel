@@ -59,4 +59,9 @@ class Cotizacion extends Model
                     ->withPivot('dias', 'precio_aplicado', 'estado')
                     ->withTimestamps();
     }
+
+    public function historial()
+    {
+        return $this->hasMany(CotizacionHistorial::class);
+    }
 }
