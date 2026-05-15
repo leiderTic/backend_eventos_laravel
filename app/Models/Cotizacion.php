@@ -20,6 +20,9 @@ class Cotizacion extends Model
         "vencido",
         "user_id",
         "evento_id",
+        "monto_tarifas",
+        "monto_servicios",
+        "monto_total",
     ];
 
     protected $casts = [
@@ -27,6 +30,9 @@ class Cotizacion extends Model
         "fecha_fin" => "date",
         "vencido" => "boolean",
         "paso" => "integer",
+        "monto_tarifas" => "decimal:2",
+        "monto_servicios" => "decimal:2",
+        "monto_total" => "decimal:2",
     ];
 
     public function user()
@@ -49,15 +55,43 @@ class Cotizacion extends Model
     public function servicios()
     {
         return $this->belongsToMany(Servicio::class, 'cotizacion_servicio')
-                    ->withPivot('cantidad', 'precio_aplicado', 'estado')
+                    ->using(CotizacionServicio::class)
+                    ->withPivot('cantidad', 'dias', 'precio_aplicado', 'estado')
                     ->withTimestamps();
     }
 
     public function tarifas()
     {
         return $this->belongsToMany(Tarifa::class, 'cotizacion_tarifa')
+                    ->using(CotizacionTarifa::class)
                     ->withPivot('dias', 'precio_aplicado', 'estado')
                     ->withTimestamps();
+    }
+
+    /**
+     * Recalcula y persiste los montos desnormalizados.
+     */
+    public function refreshTotals()
+    {
+        // Suma de tarifas: dias * precio_aplicado (donde estado = true)
+        $this->monto_tarifas = $this->tarifas()
+            ->wherePivot('estado', true)
+            ->get()
+            ->sum(function ($tarifa) {
+                return $tarifa->pivot->dias * $tarifa->pivot->precio_aplicado;
+            });
+
+        // Suma de servicios: cantidad * dias * precio_aplicado (donde estado = true)
+        $this->monto_servicios = $this->servicios()
+            ->wherePivot('estado', true)
+            ->get()
+            ->sum(function ($servicio) {
+                return $servicio->pivot->cantidad * $servicio->pivot->dias * $servicio->pivot->precio_aplicado;
+            });
+
+        $this->monto_total = $this->monto_tarifas + $this->monto_servicios;
+
+        $this->saveQuietly();
     }
 
     public function historial()
