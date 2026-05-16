@@ -66,5 +66,10 @@ Route::middleware('auth:sanctum')->group(function () {
     // Módulo Administrativo / Pagos
     Route::get('administrativo/pagos-pendientes', [\App\Http\Controllers\PagoController::class, 'pagosPendientes']);
     Route::put('pagos/{id}/verificar', [\App\Http\Controllers\PagoController::class, 'verificarPago']);
+
+    // Lookups Maestros
+    Route::get('bancos', [\App\Http\Controllers\PagoController::class, 'getBancos']);
+    Route::get('porcentajes', [\App\Http\Controllers\PagoController::class, 'getPorcentajes']);
+    Route::get('tipo-respaldos', [\App\Http\Controllers\PagoController::class, 'getTiposRespaldo']);
 });
 

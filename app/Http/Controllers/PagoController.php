@@ -6,6 +6,9 @@ use Illuminate\Http\Request;
 use App\Models\Cotizacion;
 use App\Models\Pago;
 use App\Models\Respaldo;
+use App\Models\Banco;
+use App\Models\Porcentaje;
+use App\Models\TipoRespaldo;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
@@ -137,5 +140,29 @@ class PagoController extends Controller
                 'pago' => $pago
             ]);
         });
+    }
+
+    /**
+     * Obtener lista de bancos.
+     */
+    public function getBancos()
+    {
+        return response()->json(Banco::all());
+    }
+
+    /**
+     * Obtener tipos de respaldos.
+     */
+    public function getTiposRespaldo()
+    {
+        return response()->json(TipoRespaldo::all());
+    }
+
+    /**
+     * Obtener porcentajes predefinidos.
+     */
+    public function getPorcentajes()
+    {
+        return response()->json(Porcentaje::all());
     }
 }
