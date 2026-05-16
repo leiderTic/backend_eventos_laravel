@@ -59,6 +59,12 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::apiResource('servicios', \App\Http\Controllers\ServicioController::class);
     Route::post('cotizaciones/preview', [\App\Http\Controllers\CotizacionController::class, 'preview']);
     Route::get('cotizaciones/{id}/imprimir', [\App\Http\Controllers\CotizacionController::class, 'imprimir']);
+    Route::post('cotizaciones/{id}/registrar-pago', [\App\Http\Controllers\PagoController::class, 'registrarPago']);
+    Route::post('cotizaciones/{id}/subir-respaldo', [\App\Http\Controllers\PagoController::class, 'subirRespaldo']);
     Route::apiResource('cotizaciones', \App\Http\Controllers\CotizacionController::class);
+
+    // Módulo Administrativo / Pagos
+    Route::get('administrativo/pagos-pendientes', [\App\Http\Controllers\PagoController::class, 'pagosPendientes']);
+    Route::put('pagos/{id}/verificar', [\App\Http\Controllers\PagoController::class, 'verificarPago']);
 });
 

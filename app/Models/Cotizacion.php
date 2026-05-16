@@ -23,6 +23,7 @@ class Cotizacion extends Model
         "monto_tarifas",
         "monto_servicios",
         "monto_total",
+        "monto_total_pagado",
     ];
 
     protected $casts = [
@@ -33,6 +34,7 @@ class Cotizacion extends Model
         "monto_tarifas" => "decimal:2",
         "monto_servicios" => "decimal:2",
         "monto_total" => "decimal:2",
+        "monto_total_pagado" => "decimal:2",
     ];
 
     public function user()
@@ -112,5 +114,16 @@ class Cotizacion extends Model
     public function historial()
     {
         return $this->hasMany(CotizacionHistorial::class);
+    }
+
+    public function pagos()
+    {
+        return $this->belongsToMany(Pago::class, 'cotizacion_pago')
+                    ->withTimestamps();
+    }
+
+    public function respaldos()
+    {
+        return $this->hasMany(Respaldo::class);
     }
 }
