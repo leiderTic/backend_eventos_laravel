@@ -5,11 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Cotizacion;
 use App\Models\Pago;
-use App\Models\Respaldo;
-use App\Models\Banco;
-use App\Models\Porcentaje;
-use App\Models\TipoRespaldo;
-use Illuminate\Support\Facades\Storage;
+use App\Models\User;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
@@ -64,32 +60,6 @@ class PagoController extends Controller
     }
 
     /**
-     * Subir un archivo de respaldo para la cotización.
-     */
-    public function subirRespaldo(Request $request, $id)
-    {
-        $cotizacion = Cotizacion::findOrFail($id);
-
-        $request->validate([
-            'archivo' => 'required|file|mimes:pdf,jpeg,png,jpg|max:5120',
-            'id_tipo_respaldo' => 'required|exists:tipo_respaldos,id',
-        ]);
-
-        $path = $request->file('archivo')->store('respaldos', 'public');
-
-        $respaldo = Respaldo::create([
-            'archivo_path' => $path,
-            'id_tipo_respaldo' => $request->id_tipo_respaldo,
-            'cotizacion_id' => $cotizacion->id,
-        ]);
-
-        return response()->json([
-            'message' => 'Archivo de respaldo subido correctamente.',
-            'respaldo' => $respaldo
-        ], 201);
-    }
-
-    /**
      * Listar pagos pendientes para tesorería.
      */
     public function pagosPendientes()
@@ -140,29 +110,5 @@ class PagoController extends Controller
                 'pago' => $pago
             ]);
         });
-    }
-
-    /**
-     * Obtener lista de bancos.
-     */
-    public function getBancos()
-    {
-        return response()->json(Banco::all());
-    }
-
-    /**
-     * Obtener tipos de respaldos.
-     */
-    public function getTiposRespaldo()
-    {
-        return response()->json(TipoRespaldo::all());
-    }
-
-    /**
-     * Obtener porcentajes predefinidos.
-     */
-    public function getPorcentajes()
-    {
-        return response()->json(Porcentaje::all());
     }
 }

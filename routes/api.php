@@ -60,7 +60,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('cotizaciones/preview', [\App\Http\Controllers\CotizacionController::class, 'preview']);
     Route::get('cotizaciones/{id}/imprimir', [\App\Http\Controllers\CotizacionController::class, 'imprimir']);
     Route::post('cotizaciones/{id}/registrar-pago', [\App\Http\Controllers\PagoController::class, 'registrarPago']);
-    Route::post('cotizaciones/{id}/subir-respaldo', [\App\Http\Controllers\PagoController::class, 'subirRespaldo']);
+    Route::post('cotizaciones/{id}/subir-respaldo', [\App\Http\Controllers\RespaldoController::class, 'store']);
     Route::apiResource('cotizaciones', \App\Http\Controllers\CotizacionController::class);
 
     // Módulo Administrativo / Pagos
@@ -68,8 +68,8 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::put('pagos/{id}/verificar', [\App\Http\Controllers\PagoController::class, 'verificarPago']);
 
     // Lookups Maestros
-    Route::get('bancos', [\App\Http\Controllers\PagoController::class, 'getBancos']);
-    Route::get('porcentajes', [\App\Http\Controllers\PagoController::class, 'getPorcentajes']);
-    Route::get('tipo-respaldos', [\App\Http\Controllers\PagoController::class, 'getTiposRespaldo']);
+    Route::get('bancos', [\App\Http\Controllers\BancoController::class, 'index']);
+    Route::get('porcentajes', [\App\Http\Controllers\PorcentajeController::class, 'index']);
+    Route::get('tipo-respaldos', [\App\Http\Controllers\TipoRespaldoController::class, 'index']);
 });
 
