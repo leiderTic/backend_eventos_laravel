@@ -60,6 +60,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('cotizaciones/preview', [\App\Http\Controllers\CotizacionController::class, 'preview']);
     Route::get('cotizaciones/{id}/imprimir', [\App\Http\Controllers\CotizacionController::class, 'imprimir']);
     Route::post('cotizaciones/{id}/registrar-pago', [\App\Http\Controllers\PagoController::class, 'registrarPago']);
+    Route::get('cotizaciones/{id}/respaldos', [\App\Http\Controllers\RespaldoController::class, 'index']);
     Route::post('cotizaciones/{id}/subir-respaldo', [\App\Http\Controllers\RespaldoController::class, 'store']);
     Route::apiResource('cotizaciones', \App\Http\Controllers\CotizacionController::class);
 

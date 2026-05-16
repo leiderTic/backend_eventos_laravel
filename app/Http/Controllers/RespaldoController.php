@@ -33,4 +33,13 @@ class RespaldoController extends Controller
             'respaldo' => $respaldo
         ], 201);
     }
+
+    /**
+     * Listar todos los respaldos de una cotización.
+     */
+    public function index($cotizacionId)
+    {
+        $cotizacion = Cotizacion::with(['respaldos.tipoRespaldo'])->findOrFail($cotizacionId);
+        return response()->json($cotizacion->respaldos);
+    }
 }
