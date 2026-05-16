@@ -126,4 +126,14 @@ class Cotizacion extends Model
     {
         return $this->hasMany(Respaldo::class);
     }
+
+    public function reuniones()
+    {
+        return $this->hasMany(Reunion::class);
+    }
+
+    public function crms()
+    {
+        return $this->hasMany(Crm::class);
+    }
 }
