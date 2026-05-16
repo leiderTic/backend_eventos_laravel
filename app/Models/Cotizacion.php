@@ -69,27 +69,42 @@ class Cotizacion extends Model
     }
 
     /**
+     * Calcula los montos sin persistirlos.
+     * Útil para vistas previas o auditoría previa al guardado.
+     */
+    public function calculateTotals()
+    {
+        $montoTarifas = $this->tarifas()
+            ->wherePivot('estado', true)
+            ->get()
+            ->sum(function ($tarifa) {
+                return (float)$tarifa->pivot->dias * (float)$tarifa->pivot->precio_aplicado;
+            });
+
+        $montoServicios = $this->servicios()
+            ->wherePivot('estado', true)
+            ->get()
+            ->sum(function ($servicio) {
+                return (float)$servicio->pivot->cantidad * (float)$servicio->pivot->dias * (float)$servicio->pivot->precio_aplicado;
+            });
+
+        return [
+            'monto_tarifas' => $montoTarifas,
+            'monto_servicios' => $montoServicios,
+            'monto_total' => $montoTarifas + $montoServicios
+        ];
+    }
+
+    /**
      * Recalcula y persiste los montos desnormalizados.
      */
     public function refreshTotals()
     {
-        // Suma de tarifas: dias * precio_aplicado (donde estado = true)
-        $this->monto_tarifas = $this->tarifas()
-            ->wherePivot('estado', true)
-            ->get()
-            ->sum(function ($tarifa) {
-                return $tarifa->pivot->dias * $tarifa->pivot->precio_aplicado;
-            });
-
-        // Suma de servicios: cantidad * dias * precio_aplicado (donde estado = true)
-        $this->monto_servicios = $this->servicios()
-            ->wherePivot('estado', true)
-            ->get()
-            ->sum(function ($servicio) {
-                return $servicio->pivot->cantidad * $servicio->pivot->dias * $servicio->pivot->precio_aplicado;
-            });
-
-        $this->monto_total = $this->monto_tarifas + $this->monto_servicios;
+        $totals = $this->calculateTotals();
+        
+        $this->monto_tarifas = $totals['monto_tarifas'];
+        $this->monto_servicios = $totals['monto_servicios'];
+        $this->monto_total = $totals['monto_total'];
 
         $this->saveQuietly();
     }

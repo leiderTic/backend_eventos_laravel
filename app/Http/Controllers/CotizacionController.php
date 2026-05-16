@@ -115,6 +115,9 @@ class CotizacionController extends Controller
                 $cotizacion->tarifas()->sync($syncData);
             }
 
+            // Recalcular totales después de sincronizar relaciones
+            $cotizacion->refreshTotals();
+
             return response()->json($cotizacion->load(['clientes', 'servicios', 'tarifas']), 201);
         });
     }
@@ -177,6 +180,9 @@ class CotizacionController extends Controller
                 }
                 $cotizacion->tarifas()->sync($syncData);
             }
+
+            // Recalcular totales después de sincronizar relaciones
+            $cotizacion->refreshTotals();
 
             // Registrar en el historial
             CotizacionHistorial::create([
@@ -384,13 +390,11 @@ class CotizacionController extends Controller
             }
             
             $totalDias = 0;
-            $subtotalEspacios = 0;
             $espaciosMapeados = [];
             foreach ($cotModel->tarifas as $tarifa) {
                 $dias = floatval($tarifa->pivot->dias ?? 1);
                 $precio = floatval($tarifa->pivot->precio_aplicado ?? 0);
                 $sub = $dias * $precio;
-                $subtotalEspacios += $sub;
                 if ($dias > $totalDias) $totalDias = $dias;
 
                 $espaciosMapeados[] = [
@@ -402,16 +406,14 @@ class CotizacionController extends Controller
             }
             $cotizacion['espacios'] = $espaciosMapeados;
             $cotizacion['total_dias'] = $totalDias > 0 ? $totalDias : 1;
-            $cotizacion['subtotal_espacios'] = $subtotalEspacios;
+            $cotizacion['subtotal_espacios'] = $cotModel->monto_tarifas;
             
-            $subtotalServicios = 0;
             $serviciosMapeados = [];
             foreach ($cotModel->servicios as $servicio) {
                 $cantidad = floatval($servicio->pivot->cantidad ?? 1);
                 $dias = floatval($servicio->pivot->dias ?? 1);
                 $precio = floatval($servicio->pivot->precio_aplicado ?? 0);
                 $sub = $cantidad * $dias * $precio;
-                $subtotalServicios += $sub;
 
                 $serviciosMapeados[] = [
                     'nombre' => $servicio->nombre,
@@ -422,8 +424,8 @@ class CotizacionController extends Controller
                 ];
             }
             $cotizacion['servicios'] = $serviciosMapeados;
-            $cotizacion['subtotal_servicios'] = $subtotalServicios;
-            $cotizacion['total'] = $subtotalEspacios + $subtotalServicios;
+            $cotizacion['subtotal_servicios'] = $cotModel->monto_servicios;
+            $cotizacion['total'] = $cotModel->monto_total;
             
             $logoPath = public_path('image/logo.png');
             $logoBase64 = '';
