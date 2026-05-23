@@ -50,9 +50,9 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('cotizaciones/preview', [CotizacionController::class, 'preview']);
     Route::apiResource('cotizaciones', CotizacionController::class);
 
-    Route::prefix('cotizaciones/{id}')->group(function() {
+    Route::prefix('cotizaciones/{id}')->group(function () {
         Route::get('imprimir', [CotizacionController::class, 'imprimir']);
-        
+
         // Pagos y Respaldos (Sub-recursos)
         Route::post('registrar-pago', [PagoController::class, 'registrarPago']);
         Route::get('respaldos', [RespaldoController::class, 'index']);
@@ -61,13 +61,13 @@ Route::middleware('auth:sanctum')->group(function () {
         // CRM y Seguimiento (Sub-recursos)
         Route::get('crms', [CrmController::class, 'index']);
         Route::post('crms', [CrmController::class, 'store']);
-        
+
         // Reuniones (Sub-recursos)
         Route::get('reuniones', [ReunionController::class, 'index']);
         Route::post('reuniones', [ReunionController::class, 'store']);
     });
 
-    // Rutas específicas de sub-entidades
+    // Reuniones — Rutas independientes
     Route::post('reuniones/{id}/acta', [ReunionController::class, 'subirActa']);
 
     // Módulo Administrativo / Pagos
